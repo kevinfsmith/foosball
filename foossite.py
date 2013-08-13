@@ -45,6 +45,7 @@ def foosball_cli():
 	parser.add_argument('-K', metavar='K', type=int, default=50)
 	parser.add_argument('-S', '--start-rating', metavar='S', type=int, default=750)
 	parser.add_argument('-f', '--fractional', action='store_true')
+	parser.add_argument('-m', '--match', action='store_true')
 	parser.add_argument('-l', '--limit', type=int, default=0)
 	parser.add_argument('-o', '--output', default='output')
 	parser.add_argument('games', nargs='?', type=FileType('r'), default=stdin)
@@ -80,10 +81,13 @@ def foosball_common(args):
 		lose_points = int(lose_points)
 		D = combined[loser1] + combined[loser2] - combined[winner1] - combined[winner2]
 		E = 1.0 / (1+math.pow(10,D/800.0))
+		E_reverse = 1.0 / (1+math.pow(10,-D/800.0))
 		if args["fractional"]:
 			points = args["K"]*(float(win_points)/(win_points+lose_points)-E)
-		else:
+		elif args["match"]:
 			points = args["K"]*(1-E)*(win_points-lose_points)
+		else:
+			points = args["K"]*((1-E)*win_points-(1-E_reverse)*lose_points)
 		points = int(round(points))
 		combined[winner1] += points
 		combined[winner2] += points
@@ -96,10 +100,13 @@ def foosball_common(args):
 
 		D = front[loser1] + back[loser2] - front[winner1] - back[winner2]
 		E = 1.0 / (1+math.pow(10,D/800.0))
+		E_reverse = 1.0 / (1+math.pow(10,-D/800.0))
 		if args["fractional"]:
 			points = args["K"]*(float(win_points)/(win_points+lose_points)-E)
-		else:
+		elif args["match"]:
 			points = args["K"]*(1-E)*(win_points-lose_points)
+		else:
+			points = args["K"]*((1-E)*win_points-(1-E_reverse)*lose_points)
 		points = int(round(points))
 		front[winner1] += points
 		back[winner2] += points
