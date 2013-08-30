@@ -636,3 +636,91 @@
 2013/08/12	Brian	Avi	David	John Mcl	3	1
 2013/08/12	Sumeet	Dan	David	Noel	3	2
 2013/08/12	Brian	Robert	Bill	Jim	4	0
+2013/08/12	John Mcl	Marc B	Dan	David	3	0
+2013/08/12	Sumeet	John Mcl	David	Marc B	3	0
+2013/08/13	Vishwas	Avi	Brian	Stephen	4	0
+2013/08/13	John V	Stuart	Vishwas	Robert	3	2
+2013/08/13	Cliff	Jim	Bill	Stephen	4	1
+2013/08/13	David	Marc B	Dan	John Mcl	2	1
+2013/08/13	Brian	Robert	Cliff	Avi	3	1
+2013/08/13	Stuart	Jim	Vishwas	Bill	4	1
+2013/08/13	David	Dan	Marc B	John Mcl	3	0
+2013/08/13	Bill	Jim	Vishwas	Robert	4	1
+2013/08/13	James	Robert	Avi	Brian	3	2
+2013/08/13	Vishwas	Robert	Jim	Cliff	4	3
+2013/08/15	Vishwas	Robert	Bill	Jim	4	1
+2013/08/15	Jim	Stephen	Bill	Robert	3	2
+2013/08/15	Bill	Jim	Don	Cliff	6	2
+2013/08/15	Vishwas	Robert	Brian	Avi	3	2
+2013/08/15	Bill	Jim	Vishwas	Cliff	4	0
+2013/08/15	John Mcl	Marc B	Noel	Robert	3	1
+2013/08/15	David	John Mcl	Noel	Marc B	3	0
+2013/08/15	Luis	Oreng	Chris A	Kelly	3	1
+2013/08/15	Vishwas	Cliff	Jim	Bill	4	1
+2013/08/16	Vishwas	Robert	Jim	Bill	5	1
+2013/08/16	John Mcl	Noel	Marc B	David	3	0
+2013/08/16	John Mcl	Marc B	Noel	David	3	0
+2013/08/16	John Mcl	Marc B	Dan	David	3	0
+2013/08/16	Bill	Robert	Jim	Stephen	3	1
+2013/08/16	Cary	Stuart	Bill	Mark T	5	1
+2013/08/16	Brian	Stuart	Vishwas	Robert	4	1
+2013/08/19	Marc B	David	John Mcl	Dan	1	0
+2013/08/19	Cliff	Stephen	Bill	Jim	4	3
+2013/08/19	Cliff	Stuart	Vishwas	Robert	5	2
+2013/08/19	Brian	Mark T	Jim	Avi	4	0
+2013/08/19	Jim	Stephen	Bill	Robert	4	1
+2013/08/20	John Mcl	Dan	Cary	Kevin	3	2
+2013/08/20	Brian	Stephen	Vishwas	Avi	4	2
+2013/08/20	Dan	John Mcl	David	Kevin	3	0
+2013/08/20	Cliff	Stuart	James	Robert	5	0
+2013/08/20	Bill	Jim	Don	Cliff	4	2
+2013/08/20	James	Stephen	Shack	Mark T	4	2
+2013/08/20	Brian	Robert	Cary	Jim	5	0
+2013/08/21	Cary	Stuart	John Mcl	David	3	1
+2013/08/21	Brian	Robert	John Mcl	Cary	3	0
+2013/08/22	David	John Mcl	Kevin	Marc B	3	0
+2013/08/22	Noel	John Mcl	David	Kevin	3	0
+2013/08/22	David	Dan	Noel	Kevin	3	1
+2013/08/22	John Mcl	Kevin	Dan	David	2	0
+2013/08/22	Bill	Mark T	James	Avi	4	0
+2013/08/22	Brian	Bil	Cary	Jim	2	2
+2013/08/22	Brian	Robert	Cary	Jim	2	1
+2013/08/22	Vishwas	Stephen	Jim	Avi	5	1
+2013/08/22	Dan	John Mcl	Kevin	David	2	1
+2013/08/23	Vishwas	Stephen	Bill	Robert	3	2
+2013/08/23	Brian	Robert	Cliff	Stuart	3	1
+2013/08/23	Bill	Jim	Stuart	Steve D	5	3
+2013/08/23	Vishwas	Robert	Bill	Jim	4	1
+2013/08/23	Sumeet	Dan	John Mcl	Kevin	3	1
+2013/08/23	John Mcl	Kevin	Cary	Sumeet	2	0
+2013/08/23	Cary	Stuart	Vishwas	Robert	4	2
+2013/08/23	Don	Stephen	Bill	Mark T	4	3
+2013/08/23	Jim	Brian	John Mcl	Kevin	3	2
+2013/08/26	Sumeet	Dan	John Mcl	Kevin	3	2
+2013/08/26	Cary	Stuart	Vishwas	Robert	5	1
+2013/08/26	Brian	Mark T	Jim	Stephen	4	1
+2013/08/26	Jim	Stuart	Vishwas	Robert	4	2
+2013/08/26	Noel	John V	Sumeet	Kevin	3	1
+2013/08/26	Vishwas	Robert	Jim	Stephen	4	1
+2013/08/26	John Mcl	Kevin	Sumeet	Noel	3	2
+2013/08/26	Cary	Stuart	Cliff	Mark T	4	2
+2013/08/27	Sumeet	Noel	John Mcl	Kevin	3	1
+2013/08/27	Brian	Stuart	Vishwas	Robert	5	1
+2013/08/27	Sumeet	John Mcl	Bill	Cary	3	1
+2013/08/27	Brian	Stephen	John Mcl	Noel	3	0
+2013/08/27	Vishwas	Stephen	Bill	Robert	3	2
+2013/08/27	Cary	Kevin	Sumeet	Noel	3	2
+2013/08/27	Sumeet	Noel	John Mcl	Kevin	3	1
+2013/08/27	Vishwas	Robert	Bill	Stuart	5	4
+2013/08/27	Sumeet	David	Kevin	John Mcl	3	2
+2013/08/27	Cary	Stuart	Vishwas	Robert	5	2
+2013/08/28	John Mcl	Kevin	Sumeet	David	3	2
+2013/08/28	Bill	Mark T	Don	Cliff	4	1
+2013/08/28	David	John Mcl	Sumeet	Kevin	2	1
+2013/08/28	Kevin	John Mcl	David	Noel	3	2
+2013/08/28	Bill	Robert	Vishwas	Richard	4	1
+2013/08/28	Cary	Stuart	Vishwas	Robert	4	3
+2013/08/28	Sumeet	John Mcl	Kevin	David	3	2
+2013/08/28	Stuart	Steve D	Cary	Bill	5	4
+2013/08/28	Brian	Richard	Don	Mark T	4	0
+2013/08/28	Sumeet	David	John Mcl	Noel	3	1
