@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block title %}Scoring history for {{player}}{% endblock %}
+{%block extra_head%}
+    <!--[if lt IE 9]>
+	    <script language="javascript" type="text/javascript" src="/js/excanvas.min.js"></script>
+	<![endif]-->
+	<script language="javascript" type="text/javascript" src="/js/jquery.jqplot.min.js"></script>
+    <script type="text/javascript" src="/js/jqplot.dateAxisRenderer.min.js"></script>
+	<script type="text/javascript" src="/js/jqplot.pointLabels.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="/css/jquery.jqplot.min.css" />
+	<script src="/js/jquery.tablesorter.min.js" type="text/javascript"></script>
+	<script src="/js/jquery.tablesorter.widgets.min.js" type="text/javascript"></script>
+	<link rel="stylesheet" type="text/css" href="/css/theme.bootstrap.css" />
+{%endblock%}
+{% block contents %}
+  <div id="graph" style="height: 50em"></div>
+{% endblock %}
+
+{% block script %}
+$(function () {
+  $.jqplot('graph', [
+    [
+    {% for p in players[player].front %}
+      ['{{p.game.date.date()}}', {{p.points}}]{%if not loop.last%},{%endif%}
+    {% endfor %}
+    ], [
+    {% for p in players[player].back %}
+      ['{{p.game.date.date()}}', {{p.points}}]{%if not loop.last%},{%endif%}
+    {% endfor %}
+    ], [
+    {% for p in players[player].combined %}
+      ['{{p.game.date.date()}}', {{p.points}}]{%if not loop.last%},{%endif%}
+    {% endfor %}
+    ]
+  ], {
+    title: '{{player}}\'s score over time',
+    axes:{xaxis:{renderer:$.jqplot.DateAxisRenderer}},
+    seriesDefaults: {shadow: false, markerOptions:{show: false}},
+    series: [
+        {label: 'Front'},
+        {label: 'Back'},
+        {label: 'Combined'}
+    ],
+    legend: {show: true}
+  });
+});
+{% endblock %}

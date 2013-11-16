@@ -1,0 +1,139 @@
+{% extends "base.html" %}
+{% block title %}{% endblock %}
+{%block extra_head%}
+    <!--[if lt IE 9]>
+	    <script language="javascript" type="text/javascript" src="js/excanvas.min.js"></script>
+	<![endif]-->
+	<script language="javascript" type="text/javascript" src="js/jquery.jqplot.min.js"></script>
+    <script type="text/javascript" src="js/jqplot.dateAxisRenderer.min.js"></script>
+	<script type="text/javascript" src="js/jqplot.pointLabels.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="css/jquery.jqplot.min.css" />
+	<script src="js/jquery.tablesorter.min.js" type="text/javascript"></script>
+	<script src="js/jquery.tablesorter.widgets.min.js" type="text/javascript"></script>
+	<link rel="stylesheet" type="text/css" href="css/theme.bootstrap.css" />
+{%endblock%}
+{% block contents %}
+  <h2>Scores</h2>
+  <table id="scores" class="table table-striped tablesorter">
+    <thead>
+      <tr><th>Player</th><th>Combined Score</th><th>Front Score</th><th>Back Score</th></tr>
+    </thead>
+    <tbody>
+    {% for name, latest in player_latest.iteritems() %}
+      <tr><td><a href="/player/{{name}}">{{name}}</a></td><td>{{latest[2]}}</td><td>{{latest[0]}}</td><td>{{latest[1]}}</td></tr>
+    {% endfor %}
+    </tbody>
+  </table>
+  <h2 id="rankings">Weekly Rankings</h2>
+  <div id="graph-combined" style="height: 50em"></div>
+  <div id="graph-front" style="height: 50em"></div>
+  <div id="graph-back" style="height: 50em"></div>
+{% endblock %}
+
+{% block script %}
+function tablesorter(table_name) {
+  $(table_name).tablesorter({
+    theme:"bootstrap",
+    headerTemplate: '{content} {icon}',
+    widgets: ["uitheme"]
+  });
+}
+$(function () {
+  $.extend($.tablesorter.themes.bootstrap, {
+    sortNone: "bootstrap-icon-unsorted",
+    sortAsc: "glyphicon glyphicon-chevron-up",
+    sortDesc: "glyphicon glyphicon-chevron-down"
+  });
+  tablesorter("#scores");
+  $.jqplot('graph-front', [
+    [
+    {% for player, ranks in weekly_rankings.iteritems() %}
+      ['{{ranks.front[0].game.date.date()}}', {%if ranks.front[0].ranking%}{{ranks.front[0].ranking}}{%else%}0{%endif%}, '{{player}}'],
+    {% endfor %}
+    ],
+    {% for player, ranks in weekly_rankings.iteritems() %}
+    [
+      {% for ranking in ranks.front %}
+      ['{{ranking.game.date.date()}}', {%if ranking.ranking%}{{ranking.ranking}}{%else%}0{%endif%}],
+      {% endfor %}
+    ],
+    {% endfor %}
+    [
+    {% for player, ranks in weekly_rankings.iteritems() %}
+      ['{{ranks.front[-1].game.date.date()}}', {%if ranks.front[-1].ranking%}{{ranks.front[-1].ranking}}{%else%}0{%endif%}, '{{player}}'],
+    {% endfor %}
+    ]
+  ], {
+    title: 'Weekly Front Rankings',
+    axes:{xaxis:{renderer:$.jqplot.DateAxisRenderer}, yaxis:{tickOptions:{show:false}}},
+    seriesDefaults: {shadow: false, markerOptions:{show: false}},
+    series: [
+      {show:false,pointLabels:{show:true, location:'w'}},
+      {% for player in weekly_rankings %}
+        {label: '{{player}}'},
+      {% endfor %}
+      {show:false,pointLabels:{show:true, location:'e'}}
+    ]
+  });
+  $.jqplot('graph-back', [
+    [
+    {% for player, ranks in weekly_rankings.iteritems() %}
+      ['{{ranks.back[0].game.date.date()}}', {%if ranks.back[0].ranking%}{{ranks.back[0].ranking}}{%else%}0{%endif%}, '{{player}}'],
+    {% endfor %}
+    ],
+    {% for player, ranks in weekly_rankings.iteritems() %}
+    [
+      {% for ranking in ranks.back %}
+      ['{{ranking.game.date.date()}}', {%if ranking.ranking%}{{ranking.ranking}}{%else%}0{%endif%}],
+      {% endfor %}
+    ],
+    {% endfor %}
+    [
+    {% for player, ranks in weekly_rankings.iteritems() %}
+      ['{{ranks.back[-1].game.date.date()}}', {%if ranks.back[-1].ranking%}{{ranks.back[-1].ranking}}{%else%}0{%endif%}, '{{player}}'],
+    {% endfor %}
+    ]
+  ], {
+    title: 'Weekly Back Rankings',
+    axes:{xaxis:{renderer:$.jqplot.DateAxisRenderer}, yaxis:{tickOptions:{show:false}}},
+    seriesDefaults: {shadow: false, markerOptions:{show: false}},
+    series: [
+      {show:false,pointLabels:{show:true, location:'w'}},
+      {% for player in weekly_rankings %}
+        {label: '{{player}}'},
+      {% endfor %}
+      {show:false,pointLabels:{show:true, location:'e'}}
+    ]
+  });
+  $.jqplot('graph-combined', [
+    [
+    {% for player, ranks in weekly_rankings.iteritems() %}
+      ['{{ranks.combined[0].game.date.date()}}', {%if ranks.combined[0].ranking%}{{ranks.combined[0].ranking}}{%else%}0{%endif%}, '{{player}}'],
+    {% endfor %}
+    ],
+    {% for player, ranks in weekly_rankings.iteritems() %}
+    [
+      {% for ranking in ranks.combined %}
+      ['{{ranking.game.date.date()}}', {%if ranking.ranking%}{{ranking.ranking}}{%else%}0{%endif%}],
+      {% endfor %}
+    ],
+    {% endfor %}
+    [
+    {% for player, ranks in weekly_rankings.iteritems() %}
+      ['{{ranks.combined[-1].game.date.date()}}', {%if ranks.combined[-1].ranking%}{{ranks.combined[-1].ranking}}{%else%}0{%endif%}, '{{player}}'],
+    {% endfor %}
+    ]
+  ], {
+    title: 'Weekly Combined Rankings',
+    axes:{xaxis:{renderer:$.jqplot.DateAxisRenderer}, yaxis:{tickOptions:{show:false}}},
+    seriesDefaults: {shadow: false, markerOptions:{show: false}},
+    series: [
+      {show:false,pointLabels:{show:true, location:'w'}},
+      {% for player in weekly_rankings %}
+        {label: '{{player}}'},
+      {% endfor %}
+      {show:false,pointLabels:{show:true, location:'e'}}
+    ]
+  });
+});
+{% endblock %}

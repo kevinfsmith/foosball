@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+{% block title %}Enter Foosball Scores{% endblock %}
+{% block endscript %}
+function shuffle(array) {
+  var m = array.length, t, i;
+  while (m) {
+    i = Math.floor(Math.random() * m--);
+    t = array[m];
+    array[m] = array[i];
+    array[i] = t;
+  }
+  return array;
+}
+
+$("#randomize").click(function(e) {
+  e.preventDefault();
+  players = $(".player").map(function(index, domElement){
+    return {
+      'value': domElement.value,
+      'placeholder': domElement.getAttribute('placeholder')
+    };
+  }).get();
+  shuffle(players);
+  $(".player").each(function(index, domElement){
+    domElement.value = players[index]['value'];
+    domElement.setAttribute('placeholder', players[index]['placeholder']);
+  });
+});
+{% endblock %}
+{% block contents %}
+<form method="post" action="">
+  <fieldset class="panel panel-default">
+    <div class="panel-heading hidden-sm hidden-xs">
+      <h3>Team A</h3>
+    </div>
+    <div class="panel-body">
+      <div class="col-md-10">
+        <div class="form-group">
+          <label class="control-label" for="front1">Front</label>
+          <input id="front1" name="front1" type="text" tabindex="1" class="player form-control" placeholder="Player One" />
+        </div>
+        <div class="form-group">
+          <label class="control-label" for="back1">Back</label>
+          <input id="back1" name="back1" type="text"  tabindex="2" class="player form-control" placeholder="Player Two" />
+        </div>
+      </div>
+      <div class="col-md-2 form-group">
+        <label class="control-label" for="score1">Score</label>
+        <input id="score1" name="score1" type="number" tabindex="5" class="score form-control input-small" />
+      </div>
+    </div>
+  </fieldset>
+  <fieldset class="panel panel-default">
+    <div class="panel-heading hidden-sm hidden-xs">
+      <h3>Team B</h3>
+    </div>
+    <div class="panel-body">
+      <div class="col-md-10">
+        <div class="form-group">
+          <label class="control-label" for="front2">Front</label>
+          <input id="front2" name="front2" type="text" tabindex="3" class="player form-control" placeholder="Player Three" />
+        </div>
+        <div class="form-group">
+          <label class="control-label" for="back2">Back</label>
+          <input id="back2" name="back2" type="text" tabindex="4" class="player form-control" placeholder="Player Four" />
+        </div>
+      </div>
+      <div class="col-md-2 form-group">
+        <label class="control-label" for="score2">Score</label>
+        <input id="score2" name="score2" type="number" tabindex="6" class="score form-control input-small" />
+      </div>
+    </div>
+  </fieldset>
+  <button id="randomize" class="btn">Randomize Positions</button>
+  <button id="submit" class="btn btn-primary">Submit Score</button>
+</form>
+{% endblock %}
