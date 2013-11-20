@@ -25,14 +25,24 @@
 	{%block body%}
 	<div class="navbar navbar-default">
 		<div class="navbar-header">
+             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#nav-collapse">
+                  <span class="sr-only">Toggle navigation</span>
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+             </button>
 			<a class="navbar-brand" href="#">Foosball Scores</a>
 		</div>
-		<ul class="nav navbar-nav">
-			{%block navlist%}
-			<li><a href="/">Add Game</a></li>
-			<li><a href="/rankings">View Rankings</a></li>
-			{%endblock%}
-		</ul>
+        <div class="collapse navbar-collapse" id="nav-collapse">
+		    <ul class="nav navbar-nav">
+    			{%block navlist%}
+    			<li><a href="/">Add Game</a></li>
+    			<li><a href="/rankings">View Rankings</a></li>
+    			{%block extra_navlist%}
+    			{%endblock%}
+    			{%endblock%}
+    		</ul>
+        </div>
 	</div>
     {% for message in messages %}
     <div class="alert {%if message[1]%}alert-{{message[1]}}{%else%}alert-success{%endif%}">{{ message[0] }}</div>
