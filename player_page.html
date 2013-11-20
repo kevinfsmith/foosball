@@ -1,5 +1,8 @@
 {% extends "base.html" %}
 {% block title %}Scoring history for {{player}}{% endblock %}
+{%block extra_navlist%}
+<li><a href="/player/{{player}}">{{player}}</a></li>
+{% endblock %}
 {%block extra_head%}
     <!--[if lt IE 9]>
 	    <script language="javascript" type="text/javascript" src="/js/excanvas.min.js"></script>
