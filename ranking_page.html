@@ -48,7 +48,9 @@ $(function () {
   $.jqplot('graph-front', [
     [
     {% for player, ranks in weekly_rankings.iteritems() %}
-      ['{{ranks.front[0].game.date.date()}}', {%if ranks.front[0].ranking%}{{ranks.front[0].ranking}}{%else%}0{%endif%}, '{{player}}'],
+      {%if ranks.front[0].ranking%}
+        ['{{ranks.front[0].game.date.date()}}', {{ranks.front[0].ranking}}, '{{player}}'],
+      {% endif %}
     {% endfor %}
     ],
     {% for player, ranks in weekly_rankings.iteritems() %}
