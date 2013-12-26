@@ -170,6 +170,7 @@ def weekly_rankings(rankings):
     )
 
 
+@memcached('player_rankings')
 def player_rankings(rankings, players):
     return dict(
         (player, RankingHist([
@@ -187,6 +188,7 @@ def player_rankings(rankings, players):
     )
 
 
+@memcached('player_latest')
 def player_latest(players):
     return dict(
         (name, (
@@ -270,6 +272,8 @@ class FrontPage(BaseHandler):
                     lose_points=teams[1][2])
         game.put()
         process_games.clear_cache()
+        player_rankings.clear_cache()
+        player_latest.clear_cache()
         self.add_message('Game successfully recorded.', 'success')
         self.redirect('/rankings')
 
@@ -300,6 +304,8 @@ class UploadPage(BaseHandler):
         ndb.Future.wait_all([Game.from_dict(game_data).put_async() for game_data in reader])
         self.add_message('Upload successful', 'success')
         process_games.clear_cache()
+        player_rankings.clear_cache()
+        player_latest.clear_cache()
         self.redirect('/rankings')
 
 
