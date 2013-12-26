@@ -196,13 +196,17 @@ def player_latest(players):
         )) for name, stats in players.iteritems())
 
 @memcached('processed_games')
-def process_games():
+def small_process_games():
     players = defaultdict(lambda: PlayerHist([], [], []))
     rankings = RankingHist([], [], [])
     for game in Game.query().order(Game.date):
         process_game(players, game)
         update_rankings(rankings, players, game)
     players = dict(players)
+    return (players, rankings)
+
+def process_games():
+    players, rankings = small_process_games()
     return {'players': players,
             'rankings': rankings,
             'player_latest': player_latest(players),
