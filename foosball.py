@@ -10,7 +10,7 @@ import jinja2
 from google.appengine.ext import ndb
 from google.appengine.api import memcache
 import bz2
-import json
+import pickle
 
 JINJA_ENVIRONMENT = jinja2.Environment(
     loader=jinja2.FileSystemLoader(os.path.dirname(__file__)),
@@ -30,10 +30,10 @@ def memcached(key):
         def decorated(*args, **kwargs):
             cache = memcache.get(key)
             if cache is not None:
-                data = json.loads(bz2.decompress(cache))
+                data = pickle.loads(bz2.decompress(cache))
             else:
                 data = fun(*args, **kwargs)
-                memcache.add(key, bz2.compress(json.dumps(data)))
+                memcache.add(key, bz2.compress(pickle.dumps(data)))
             return data
 
         def clear_cache():
