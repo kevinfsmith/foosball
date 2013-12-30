@@ -271,7 +271,7 @@ class FrontPage(BaseHandler):
                     back_loser=teams[1][1],
                     lose_points=teams[1][2])
         game.put()
-        process_games.clear_cache()
+        small_process_games.clear_cache()
         player_rankings.clear_cache()
         player_latest.clear_cache()
         self.add_message('Game successfully recorded.', 'success')
@@ -303,7 +303,7 @@ class UploadPage(BaseHandler):
         reader = csv.DictReader(self.request.get('upload').split('\n'), FIELD_ORDER)
         ndb.Future.wait_all([Game.from_dict(game_data).put_async() for game_data in reader])
         self.add_message('Upload successful', 'success')
-        process_games.clear_cache()
+        small_process_games.clear_cache()
         player_rankings.clear_cache()
         player_latest.clear_cache()
         self.redirect('/rankings')
