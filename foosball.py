@@ -9,6 +9,7 @@ import webapp2_extras.sessions
 import jinja2
 from google.appengine.ext import ndb
 from google.appengine.api import memcache
+import bz2
 
 JINJA_ENVIRONMENT = jinja2.Environment(
     loader=jinja2.FileSystemLoader(os.path.dirname(__file__)),
@@ -28,10 +29,10 @@ def memcached(key):
         def decorated(*args, **kwargs):
             cache = memcache.get(key)
             if cache is not None:
-                data = cache
+                data = bz2.decompress(cache)
             else:
                 data = fun(*args, **kwargs)
-                memcache.add(key, data)
+                memcache.add(key, bz2.compress(data))
             return data
 
         def clear_cache():
