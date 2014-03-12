@@ -9,14 +9,18 @@ AllNames = {
     "Avi": "Avi",
     "Bill": "Bill",
     "Brian": "Brian",
+    "Brit": "Brittany",
+    "Britt": "Brittany",
     "Brittany": "Brittany",
     "Cary": "Cary",
+    "Chai": "Chhay",
     "Chay": "Chhay",
     "Chhay": "Chhay",
     "Chris": "Chris",
+    "Chris A": "Chris",
     "Cliff": "Cliff",
     "Dan": "Dan",
-    "Dave": "Dave",
+    "Dave": "Dave R",
     "Dave R": "Dave R",
     "David": "David",
     "Don": "Don",
@@ -26,8 +30,10 @@ AllNames = {
     "James": "James",
     "Jenna": "Jenna",
     "Jim": "Jim",
+    "John B": "John B",
     "John M": "John M",
     "John V": "John V",
+    "Carl": "Karl",
     "Karl": "Karl",
     "Kelly": "Kelly",
     "Kevin": "Kevin",
@@ -45,9 +51,10 @@ AllNames = {
     "Paul D": "Paul D",
     "Rakin": "Rakin",
     "Richard": "Richard",
-    "Rob": "Rob",
+    #"Rob": "Robert",
     "Robert": "Robert",
     "Ron": "Ron",
+    "Ron F": "Ron",
     "Shack": "Shack",
     "Shital": "Shital",
     "Stephen": "Stephen",
@@ -66,7 +73,17 @@ ENTERED_SCORES_HEADERS  = ['date', 'winFront', 'winBack', 'loseFront', 'loseBack
 PREPARED_SCORES_HEADERS = ['date', 'winFront', 'winBack', 'loseFront', 'loseBack', 'winPoints', 'lostPoints']
 
 
+def standardizeCase(name):
+    names = name.split(' ')
+    cased_name = []
+    for n in names:
+        if n:
+            cased_name.append(n[0].upper() + n[1:].lower())
+    name = ' '.join(cased_name)
+    return name
+
 def addName(name, names=AllNames):
+    name = standardizeCase(name)
     if not names.has_key(name):
         names[name] = name
         return True
@@ -97,6 +114,7 @@ def collectAllNames(infile, outfile=None, headers=ENTERED_SCORES_HEADERS):
 
 def validatedName(playerName, names=AllNames):
     name = playerName.strip()
+    name = standardizeCase(name)
     if not names.has_key(name):
         print("Unknown name: '%s'" % name)
         raise ValueError("Unknown name: '%s'" % name)
