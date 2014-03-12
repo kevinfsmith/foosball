@@ -11,6 +11,7 @@ from google.appengine.ext import ndb
 from google.appengine.api import memcache
 import bz2
 import pickle
+import datetime
 
 JINJA_ENVIRONMENT = jinja2.Environment(
     loader=jinja2.FileSystemLoader(os.path.dirname(__file__)),
@@ -23,6 +24,8 @@ FRACTIONAL = False
 LIMIT = 0
 MATCH = False
 FIELD_ORDER = ['date', 'front_winner', 'back_winner', 'front_loser', 'back_loser', 'win_points', 'lose_points']
+
+EXCLUDE_PLAYERS_AFTER_DAYS = 30         # Don't include in rankings players which haven't played in 30 days
 
 
 def memcached(key):
@@ -201,12 +204,22 @@ def player_latest(players):
 
 @memcached('processed_games')
 def small_process_games():
+    now = datetime.datetime.now()
+    includedPlayers = set()
     players = defaultdict(lambda: PlayerHist([], [], []))
     rankings = RankingHist([], [], [])
     for game in Game.query().order(Game.date):
+        if (now - game.date).days <= EXCLUDE_PLAYERS_AFTER_DAYS:
+            includedPlayers.add(game.front_winner)
+            includedPlayers.add(game.back_winner)
+            includedPlayers.add(game.front_loser)
+            includedPlayers.add(game.back_loser)
         process_game(players, game)
         update_rankings(rankings, players, game)
     players = dict(players)
+    for p in players.keys():
+        if p not in includedPlayers:
+            del players[p]
     return (players, rankings)
 
 def process_games():
