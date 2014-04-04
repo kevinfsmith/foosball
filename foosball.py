@@ -74,14 +74,18 @@ RankingHist = namedtuple('RankingHist', ['front', 'back', 'combined'])
 
 
 def elo(D, win_points, lose_points):
+    # E is the expected odds of the losing team to win, E_reverse is the odds of the wining team to win.
     E = 1.0 / (1+math.pow(10, D/800.0))
-    E_reverse = 1.0 / (1+math.pow(10, -D/800.0))
+    # E_reverse is the same as 1.0 - E
+    #E_reverse = 1.0 / (1+math.pow(10, -D/800.0))
+    #
+    # The number of points to award the winners and to deduct from the losers is returned
     if FRACTIONAL:
         return int(K*(float(win_points)/(win_points+lose_points)-E))
     elif MATCH:
         return int(K*(1-E)*(win_points-lose_points))
     else:
-        return int(K*((1-E)*win_points-(1-E_reverse)*lose_points))
+        return int(K*((1-E)*win_points-(E)*lose_points))
 
 
 def player_points(players, player, position):
@@ -330,10 +334,17 @@ class DownloadPage(BaseHandler):
         writer = csv.DictWriter(self.response, FIELD_ORDER)
         writer.writerows(game.to_dict() for game in Game.query().order(Game.date))
 
+class GameSheet(BaseHandler):
+    def get(self):
+        self.response.content_type = 'application/pdf'
+        self.response.write(open('Foosball_Game_Log_Form.pdf', 'rb').read())
+
 application = webapp2.WSGIApplication(
     routes=[
-        ('/', FrontPage),
+        ('/', RankingPage),
         ('/rankings', RankingPage),
+        ('/addgame', FrontPage),
+        ('/gamesheet', GameSheet),
         ('/player/(.+)', PlayerPage),
         ('/upload', UploadPage),
         ('/download', DownloadPage),
