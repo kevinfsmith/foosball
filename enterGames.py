@@ -28,10 +28,7 @@ def getDate(prevDateTime=None):
     currDate = prevDateTime.date()
     while True:
         prompt = "Enter the game date [%s]" % str(currDate)
-        try:
-            gameDate = raw_input("%s: " % prompt)
-        except KeyboardInterrupt:
-            return None
+        gameDate = raw_input("%s: " % prompt)
         gameDate = gameDate.strip()
         if gameDate:
             currTime = 0
@@ -77,15 +74,17 @@ def getPoints(promptText):
 
 def enterGame(players, prevDate=None):
     print
-    gameDate = getDate(prevDate)
-    if gameDate is None:
+    try:
+        gameDate = getDate(prevDate)
+        winFront = getName(players, promptText="Name of the Front Winner")
+        winBack = getName(players, promptText=" Name of the Back Winner")
+        loseFront = getName(players, promptText=" Name of the Front Loser")
+        loseBack = getName(players, promptText="  Name of the Back Loser")
+        winPoints = getPoints(" Enter number of games won: ")
+        losePoints = getPoints("Enter number of games lost: ")
+    except KeyboardInterrupt:
         return (None, None)
-    winFront = getName(players, promptText="Name of the Front Winner")
-    winBack = getName(players, promptText=" Name of the Back Winner")
-    loseFront = getName(players, promptText=" Name of the Front Loser")
-    loseBack = getName(players, promptText="  Name of the Back Loser")
-    winPoints = getPoints(" Enter number of games won: ")
-    losePoints = getPoints("Enter number of games lost: ")
+
     preparedScore = {
                     'date': str(gameDate),
                      'front_winner': winFront,
