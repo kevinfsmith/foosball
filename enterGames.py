@@ -3,7 +3,9 @@ import string
 import sys
 import copy
 import time
+import datetime
 import dateutil.parser
+import urllib, urllib2
 
 
 PREPARED_SCORES_HEADERS = ['date', 'winFront', 'winBack', 'loseFront', 'loseBack', 'winPoints', 'lostPoints']
@@ -50,10 +52,15 @@ def getName(players, promptText="Enter name"):
         if players.has_key(enteredName.lower()):
             return players[enteredName.lower()]
         candidates = [player[1] for player in players.items() if enteredName.lower() == player[0][:len(enteredName)]]
-        print("Known candidates are: %s" % str(candidates))
+        if len(candidates) == 1:
+            return candidates[0]
+        elif len(candidates) == 0:
+            candidates = [player[1] for player in players.items() if enteredName.lower()[:len(player[0])] == player[0]]
+        if len(candidates) > 0:
+            print("Candidate players are: %s" % str(candidates))
         enteredName = standardizeCase(enteredName)
         newName = raw_input("Is '%s' a new name to be added? " % enteredName)
-        if newName and newName[0].upper() == 'Y':
+        if newName.upper() == 'Y' or newName.upper == 'YES':
             players[enteredName.lower()] = enteredName
             print("OK, name: '%s' is being added." % enteredName)
             return enteredName
@@ -82,7 +89,7 @@ def enterGame(players, prevDate=None):
         loseBack = getName(players, promptText="  Name of the Back Loser")
         winPoints = getPoints(" Enter number of games won: ")
         losePoints = getPoints("Enter number of games lost: ")
-    except KeyboardInterrupt:
+    except:
         return (None, None)
 
     preparedScore = {
@@ -112,13 +119,31 @@ def writePlayerData(playerFileName, players):
 
 def addGames(players, outFileName):
     gameDate = None
+    gameCount = 0
     ofile = open(outFileName, 'w')
     while True:
         game, gameDate = enterGame(players, gameDate)
         if game is None:
+            print("---Break detected!---")
             break
-        ofile.write("%(date)s,%(front_winner)s,%(back_winner)s,%(front_loser)s,%(back_loser)s,%(win_points)d,%(lose_points)d\n" % game)
+        gameCount += 1
+        gameData = "%(date)s,%(front_winner)s,%(back_winner)s,%(front_loser)s,%(back_loser)s,%(win_points)d,%(lose_points)d\n" % game
+        print gameData, #!!!
+        ofile.write(gameData)
     ofile.close()
+    return gameCount
+
+def backupAllGames(url='http://elo-foosball.appspot.com/download'):
+    today = datetime.datetime.today()
+    backupFilename = today.strftime("Foosball_%Y%m%d.bak")
+    if not os.path.exists(backupFilename):
+        print("Backing up all of the current Foosball scores to: %s" % backupFilename)
+        req = urllib2.Request(url)
+        response = urllib2.urlopen(req)
+        backup_data = response.read()
+        bkupFile = open(backupFilename, 'w')
+        bkupFile.write(backup_data.replace('\r', ''))
+        bkupFile.close()
 
 if __name__ == '__main__':
     outFileName = 'newgames.csv'
@@ -127,20 +152,24 @@ if __name__ == '__main__':
         outFileName = sys.argv[1]
         if len(sys.argv) > 2:
             playerFile = sys.argv[2]
+    backupAllGames("http://elo-foosball.appspot.com/download")
     players = loadPlayerData(playerFile)
     players0 = copy.copy(players)
-    addGames(players, outFileName)
+    numGames = addGames(players, outFileName)
     if players != players0:
         print("The list of known players has been updated.")
         writePlayerData(playerFile, players)
     print
-    print
-    print("Please go to the URL: http://elo-foosball.appspot.com/upload")
-    print("and choose the file: %s and \"Submit Score\"." % os.path.join(os.path.realpath('.'), outFileName))
-    print
-    print("It is important that you do this before the next time you run this program")
-    print("\tor your current entries will lost!")
-    print
-    print("To backup the Foosball data: http://elo-foosball.appspot.com/download")
+    if numGames > 0:
+        print
+        print("%d games have been entered." % numGames)
+        print
+        print("Please go to the URL: http://elo-foosball.appspot.com/upload")
+        print("and choose the file: %s and \"Submit Score\"." % os.path.join(os.path.realpath('.'), outFileName))
+        print
+        print("It is important that you do this before the next time you run this program")
+        print("\tor your current entries will lost!")
+    else:
+        print("No games were entered.")
     time.sleep(3)
 
