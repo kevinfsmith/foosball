@@ -1,3 +1,4 @@
+#!/usr/bin/python
 import os
 import string
 import sys
@@ -52,7 +53,7 @@ def getName(players, promptText="Enter name"):
         if players.has_key(enteredName.lower()):
             return players[enteredName.lower()]
         candidates = [player[1] for player in players.items() if enteredName.lower() == player[0][:len(enteredName)]]
-        if len(candidates) == 1:
+        if len(set(candidates)) == 1:
             return candidates[0]
         elif len(candidates) == 0:
             candidates = [player[1] for player in players.items() if enteredName.lower()[:len(player[0])] == player[0]]
