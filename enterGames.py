@@ -29,6 +29,7 @@ def getDate(prevDateTime=None):
     else:
         currTime = prevDateTime.hour * 60 + prevDateTime.minute + MINUTES_PER_GAME_EST
     currDate = prevDateTime.date()
+    origCurrTime = currTime
     while True:
         prompt = "Enter the game date [%s]" % str(currDate)
         gameDate = raw_input("%s: " % prompt)
@@ -43,6 +44,7 @@ def getDate(prevDateTime=None):
             print
             print("Invalid input!  Please try again.")
             print
+            currTime = origCurrTime
         else:
             return d
 
