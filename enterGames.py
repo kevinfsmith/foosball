@@ -53,10 +53,16 @@ def getName(players, promptText="Enter name"):
         enteredName = raw_input("%s: " % promptText)
         enteredName = enteredName.strip()
         if players.has_key(enteredName.lower()):
-            return players[enteredName.lower()]
+            name = players[enteredName.lower()][:]
+            while name[-1] in ['"', ' ', '\n']:
+                name = name[:-1]
+            return name
         candidates = [player[1] for player in players.items() if enteredName.lower() == player[0][:len(enteredName)]]
         if len(set(candidates)) == 1:
-            return candidates[0]
+            name = candidates[0][:]
+            while name[-1] in ['"', ' ', '\n']:
+                name = name[:-1]
+            return name
         elif len(candidates) == 0:
             candidates = [player[1] for player in players.items() if enteredName.lower()[:len(player[0])] == player[0]]
         if len(candidates) > 0:
